@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.dialect">
+			org.hibernate.dialect.MySQLDialect
+		</property>
+		<property name="hibernate.connection.driver_class">
+			com.mysql.jdbc.Driver
+		</property>
+		<property name="hibernate.connection.url">
+			jdbc:mysql://localhost/gopher
+		</property>
+		<property name="hibernate.connection.username">
+			root
+		</property>
+		
+		<property name="hibernate.connection.password">
+			hom3staR92
+		</property>
+		
+		<!--
+		<property name="format_sql">true</property>
+        <property name="use_sql_comments">true</property>
+		<property name="show_sql">true</property>
+		-->
+		<mapping class="com.echostar.gopher.persist.Suite"/>
+		<mapping class="com.echostar.gopher.persist.SuiteDecorator"/>
+		<mapping class="com.echostar.gopher.persist.TestSuite"/>
+		<mapping class="com.echostar.gopher.persist.TestClass"/>
+		<mapping class="com.echostar.gopher.persist.TestDataType"/>
+		<mapping class="com.echostar.gopher.persist.TestCase"/>
+		<mapping class="com.echostar.gopher.persist.TestNode"/>
+		<mapping class="com.echostar.gopher.persist.TestRun"/>
+		<mapping class="com.echostar.gopher.persist.TestData"/>
+		<mapping class="com.echostar.gopher.persist.ElementLocator"/>
+		<mapping class="com.echostar.gopher.persist.TestRunResult"/>
+		<mapping class="com.echostar.gopher.persist.TestClassDecorator"/>
+		<mapping class="com.echostar.gopher.persist.TestSuiteDecorator"/>
+		<mapping class="com.echostar.gopher.persist.Browser"/>
+		<mapping class="com.echostar.gopher.persist.TestException"/>
+		<mapping class="com.echostar.gopher.persist.SuiteInstance"/>
+		<mapping class="com.echostar.gopher.persist.TestSuiteInstance"/>
+	</session-factory>
+</hibernate-configuration>

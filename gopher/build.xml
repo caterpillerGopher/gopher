@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE project [
+]>
+
+<project name="GOPHER" default="compile" basedir=".">
+
+	<!-- ========== Initialize Properties =================================== -->
+
+	<property environment="env"/>
+	<property name="ws.home" value="${basedir}"/>
+	<property name="ws.jars" value="${basedir}/jars-core"/>
+	<property name="test.dest" value="${ws.home}/build"/>
+	<property name="test.src" value="${ws.home}/src"/>
+	<property name="ng.result" value="test-output"/>
+
+	<!--target name="start-selenium-server">
+        <java jar="${ws.home}/lib/selenium-server.jar"/>
+    </target-->
+
+	<path id="jars-path">
+		<fileset dir="${ws.jars}" includes="*.jar"/>
+	</path>
+
+	<target name="set-class-path" unless="test.classpath">
+		<pathconvert pathsep=":" 
+            property="test.classpath"
+            refid="jars-path"/>
+	</target>
+
+	<target name="init" depends="set-class-path">
+		<tstamp>
+			<format property="start.time" pattern="MM/dd/yyyy hh:mm aa" />
+		</tstamp>
+		<condition property="ANT" 
+            value="${env.ANT_HOME}/bin/ant.bat" 
+            else="${env.ANT_HOME}/bin/ant">
+			<os family="windows" />
+		</condition>
+		<taskdef name="testng" classpath="${test.classpath}" classname="org.testng.TestNGAntTask" />
+	</target>
+
+	<!-- Clean -->
+	<target name="clean">
+		<delete dir="${test.dest}"/>
+	</target>
+
+	<!-- Compile -->
+	<target name="compile" depends="init, clean" >
+		<delete includeemptydirs="true" quiet="true">
+			<fileset dir="${test.dest}" includes="**/*"/>
+		</delete>
+		<echo message="Making directory ${test.dest} ..."/>
+		<mkdir dir="${test.dest}"/>
+		<echo message="CLASSPATH=${test.classpath}"/>
+		<echo message="Compiling..."/>
+		<javac includeantruntime="false"
+	            debug="true" 
+	            destdir="${test.dest}" 
+	            srcdir="${test.src}" 
+	            target="1.8" 
+	            classpath="${test.classpath}"
+	    >
+		</javac>
+		<copy todir="${test.dest}">
+			<fileset dir="${test.src}" excludes="**/*.java"/>
+		</copy>
+	</target>
+
+	<!-- Build -->
+	<target name="build" depends="init">
+	</target>
+
+	<!-- Run -->
+	<target name="run" depends="compile">
+		<testng classpath="${test.classpath}:${test.dest}" suitename="suite1">
+			<xmlfileset dir="${ws.home}/test-data/suites" includes="testng_TestNG_SuiteRun_0.xml"/>
+		</testng>
+	</target>
+
+	<!-- Start the Selenium Grid. -->
+	<target name="start-grid" depends="compile">
+		<echo>Please wait, starting grid ...</echo>
+		<java classname="com.echostar.gopher.selenium.SetupGrid" classpath="${test.dest}" classpathref="jars-path">
+			<arg value="startGRID"/>
+		</java>
+		<echo>Grid started.</echo>
+	</target>
+
+	<!-- Stop the Selenium Grid. -->
+	<target name="stop-grid" depends="compile">
+		<echo>Please wait, stopping grid ...</echo>
+		<java classname="com.echostar.gopher.selenium.SetupGrid" classpath="${test.dest}" classpathref="jars-path">
+			<arg value="stopGRID"/>
+		</java>
+		<echo>Grid stopped.</echo>
+	</target>
+
+	<target name="email"  depends="compile">
+		<java classname="com.echostar.gopher.util.SendMail" classpath="${test.dest}" classpathref="jars-path" />
+	</target>
+
+	<target name="makexsltreports"  depends="compile">
+		<mkdir dir="${ws.home}/XSLT_Reports/output"/>
+
+		<xslt in="${ng.result}/testng-results.xml" style="config/testng-results.xsl"
+	              out="${ws.home}/XSLT_Reports/output/index.html" classpathref="jars-path" processor="SaxonLiaison">
+			<param name="testNgXslt.outputDir" expression="${ws.home}/XSLT_Reports/output/"/>
+			<param name="testNgXslt.showRuntimeTotals" expression="true"/>
+		</xslt>
+	</target>
+
+	<target name="move-results"  depends="compile">
+		<java classname="com.echostar.gopher.util.MoveFile" classpath="${test.dest}" classpathref="jars-path" />
+	</target>
+	
+    <!-- Create a jar file containing only the necessary classes and property files. -->
+    <target name="jar" depends="compile">
+        <echo message="Building jar."/>
+        <mkdir dir="${ws.home}/release"/>
+        <jar destfile="${ws.home}/release/gopher.jar">
+             <fileset dir="${ws.home}/config">
+                <include name="*.properties"/>
+                <include name="*.xml"/>
+                <include name="*.xsl"/>
+            </fileset>
+            <fileset dir="${ws.home}/bin">
+                <include name="**/*.class"/>
+                <include name="**/*.properties"/>
+                <include name="**/*.xml"/>
+                <include name="**/*.dtd"/>
+            </fileset>
+            <fileset dir="${ws.home}/db_scripts">
+               <include name="*.sql"/>
+           </fileset>
+        </jar>
+    </target>
+
+    <!-- Create a war file containing only the necessary classes and web elements. -->
+    <target name="war" depends="jar">
+        <echo message="Building war."/>
+        <mkdir dir="${ws.home}/release"/>
+        <war destfile="${ws.home}/release/gopher.war"
+            webxml="${ws.home}/web/web.xml">
+            <fileset dir="${ws.home}/web/faces">
+                <include name="**/*"/>
+            </fileset>
+            <classes dir="${ws.home}/bin">
+                <include name="com/echostar/gopher/jsf/**"/>
+            </classes>
+        </war>
+    </target>
+
+    <!-- Deploy the war file. -->
+    <target name="deploy" depends="war">
+    	<!--
+        <copy todir="${prod.deploy}">
+            <fileset file="${prod.products}\${prod.ejb.ear.file}"/>
+        </copy>
+    	-->
+    </target>
+
+	<!-- Un-deploy the war file. -->
+    <target name="undeploy">
+    	<!--
+        <delete file="${prod.deploy}\${prod.ejb.ear.file}"/>
+        -->
+    </target>
+
+	<!-- Backup the database. -->
+    <target name="backup" depends="compile">
+		<java classname="com.echostar.gopher.util.DBBackup" classpath="${test.dest}" classpathref="jars-path-id" />
+    </target>
+
+</project>

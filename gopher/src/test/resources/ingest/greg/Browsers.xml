@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE gopher-data SYSTEM "gopher-data.dtd">
+<!--
+All supported-browsers
+-->
+<gopher-data>
+	<supported-browser>
+		<id>0</id>
+		<name>Firefox</name>
+		<browser-type>FIREFOX</browser-type>
+	</supported-browser>
+	<supported-browser>
+		<id>1</id>
+		<name>IE</name>
+		<browser-type>IEXPLORE</browser-type>
+	</supported-browser>
+	<supported-browser>
+		<id>2</id>
+		<name>Chrome</name>
+		<browser-type>CHROME</browser-type>
+	</supported-browser>
+	<supported-browser>
+		<id>3</id>
+		<name>Safari</name>
+		<browser-type>SAFARI</browser-type>
+	</supported-browser>
+</gopher-data>

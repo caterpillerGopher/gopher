@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="SuiteInstance_Suite">
+	<listeners>
+		<listener class-name="com.echostar.gopher.testng.TestsListenerAdapter"/>
+		<listener class-name="com.echostar.gopher.testng.SuiteListenerAdaptor"/>
+	</listeners>
+	<suite-files>
+		<parameter name="url"  value="suite-url"/>
+		<parameter name="browser"  value="CHROME"/>
+		<parameter name="suiteName"  value="SuiteInstance_Suite"/>
+		<parameter name="suiteVersion"  value="1.0"/>
+		<suite-file path="SuiteInstance_TestSuite.xml"/>
+		<suite-file path="SuiteInstance2_TestSuite.xml"/>
+	</suite-files>
+</suite>

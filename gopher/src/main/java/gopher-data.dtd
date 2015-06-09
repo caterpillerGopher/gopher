@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT gopher-data (suite | test-suite | test-class | test-data-type | test-case |
+	test-data | element-locator | test-node | suite-decorator | test-suite-decorator | test-class-decorator |test-run | supported-browser)*>
+<!ELEMENT suite (id, name, version, description?, runmode, test-suite-id*)>
+<!ELEMENT test-suite (id, name, version, description?, runmode, test-class-id*)>
+<!ELEMENT test-class (id, name, version, class-name, description?, runmode, jira-issue, test-data-type-id*)>
+<!ELEMENT test-data-type (id, name, type, role)>
+<!ELEMENT test-data (id, value, test-data-type-id)>
+<!ELEMENT element-locator (id, locator-type, name, value, description?)>
+<!ELEMENT test-case (id, name, version, runmode, test-class-id, test-data-id*, element-locator-id*)>
+<!ELEMENT suite-decorator (id, name, url?, browser?, runmode, suite-id)>
+<!ELEMENT test-run (id, url?, browser?, runmode, test-case-id, test-node-id?)>
+<!ELEMENT test-suite-decorator (id, url?, browser?, runmode, suite-id, test-suite-id)>
+<!ELEMENT test-class-decorator (id, url?, browser?, runmode, test-suite-id, test-class-id)>
+<!ELEMENT test-node (id, node-ip?, node-port, platform, user-name, password?,
+install-dir, selenium-server, supported-browser-id*)>
+<!ELEMENT supported-browser (id, name, browser-type)>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT test-class-id (#PCDATA)>
+<!ELEMENT test-case-id (#PCDATA)>
+<!ELEMENT test-run-id (#PCDATA)>
+<!ELEMENT test-node-id (#PCDATA)>
+<!ELEMENT test-data-type-id (#PCDATA)>
+<!ELEMENT test-data-id (#PCDATA)>
+<!ELEMENT element-locator-id (#PCDATA)>
+<!ELEMENT supported-browser-id (#PCDATA)>
+<!ELEMENT test-suite-id (#PCDATA)>
+<!ELEMENT suite-id (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT jira-issue (#PCDATA)>
+<!ELEMENT version (#PCDATA)>
+<!ELEMENT browser-type (#PCDATA)>
+<!ELEMENT type (#PCDATA)>
+<!ELEMENT role (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT class-name (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT runmode (#PCDATA)>
+<!ELEMENT success (#PCDATA)>
+<!ELEMENT message (#PCDATA)>
+<!ELEMENT start-time (#PCDATA)>
+<!ELEMENT end-time (#PCDATA)>
+<!ELEMENT user-name (#PCDATA)>
+<!ELEMENT value (#PCDATA)>
+<!ELEMENT locator-type (#PCDATA)>
+<!ELEMENT node-ip (#PCDATA)>
+<!ELEMENT node-port (#PCDATA)>
+<!ELEMENT platform (#PCDATA)>
+<!ELEMENT password (#PCDATA)>
+<!ELEMENT install-dir (#PCDATA)>
+<!ELEMENT selenium-server (#PCDATA)>
+<!ELEMENT browser (#PCDATA)>

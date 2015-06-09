@@ -1,0 +1,10 @@
+* Find TestResults by URL or name?
+* Issues with large data value VARCHAR?
+* Have test classes recognized by Eclipse as TestNG tests.
+* Role of TestListeners?
+* Should hub configuration be in database?
+* Enforce name+version uniqueness.
+* Handle deletions
+* Have grid startup/shutdown use TestNodes?
+* Breakup config into user specific directories.
+* Change GopherDriverAPI to use new enums.

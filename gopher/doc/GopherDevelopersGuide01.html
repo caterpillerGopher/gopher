@@ -1,0 +1,280 @@
+<html>
+<head>
+<title>Gopher Developers Guide</title>
+</head>
+<body bgcolor="#D2B48C">
+<h1>Gopher Developers Guide</h1>
+<h2>Table Of Contents</h2>
+<ul>
+<li><a href="#Introduction">Introduction</a></li>
+<li><a href="#Installation">Installation</a></li>
+<li><a href="#Installing Git">Installing Git</a></li>
+<li><a href="#Installing Gopher">Installing Gopher</a></li>
+<li><a href="#Installing MySQL">Installing MySQL</a></li>
+<li><a href="#Installing Hibernate">Installing Hibernate</a></li>
+<li><a href="#Configuration">Configuration</a></li>
+<li><a href="#Defining Tests">Defining Tests</a></li>
+<li><a href="#Developing Test Classes">Developing Test Classes</a></li>
+</ul>
+<h2><a name="Introduction">Introduction</a></h2>
+Gopher is a framework for automated tests of web sites.</br>
+Test classes are written in Java.</br>
+Gopher is currently the framework used by Echostar for testing
+dishanywhere.com (DANY.)</p>
+Gopher stores test configurations, test data and test results
+in a relational database.</br>
+Gopher test classes are TestNG test classes.</br>
+Test configuration and data may be defined in XML and imported to re-create
+or add to the database.</p>
+TestNG suite and test suite files are generated using the database model.</br>
+Gopher uses an interface 'GopherData' to access and update the data.</br>
+DANY test classes use Selenium to drive browsers and access page elements.</br>
+TestClasses uses a class 'GopherDriverAPI' to access Selenium methods.</br>
+TestClasses are provided data by Gopher and test results are created
+for them.</p>
+Gopher uses MySQL and the GopherData implementation uses Hibernate.</br>
+Gopher developers use Eclipse as a development and system testing
+environment.</p>
+An Ant-based production environment is under development.</br>
+Gopher and DANY test class source is maintained by Git.
+<h2><a name="Installation">Installation</a></h2>
+<h3><a name="Installing Git">Installing Git</a></h3>
+In Eclipse go to 'Help/Eclipse Marketplace', search for 'Git' and install 'EGit.'
+<h3><a name="Installing Gopher">Installing Gopher</a></h3>
+In Eclipse, import git branch �Gopher_Shaolin� as a new local branch.
+Your project path will be referred to here as �gopher-install.�
+<h3><a name="Installing MySQL">Installing MySQL</a></h3>
+<ul>
+<li>Download MySQL (http://dev.mysql.com/downloads/windows/installer/5.6.html) and run its install.</li>
+<li>Do not set a password on root, Gopher connects as root with no password.
+<li>Define MYSQL_HOME environment variable to point to the MySQL install directory.</li>
+<li>Add MYSQL_HOME/bin to your search path.</li>
+<li>In an administrator command window, run mysqld to start the server.</li>
+<li>In a separate window, run "mysql --user=root". You should get the mysql prompt.</li>
+<li>At the mysql prompt enter "source �gopher-install�/db_scripts/create-db-gopher.sql". This will create the database �gopher� and its tables.</li>
+</ul>
+<h3><a name="Installing Hibernate">Installing Hibernate</a></h3>
+<ul>
+<li>The Hibernate jar files and dependencies should already be in the jars-core directory.</br>
+If they are missing, download Hibernate (http://sourceforge.net/projects/hibernate/),</br>
+unzip and add all the jars in hibernate-release-4.3.6.Final\lib\required to jars-core.</li> 
+<li>The MySQL Java database connector jar �mysql-connector-java-5.1.31-bin.jar� should be in jars-core.</br>
+If not, copy the jar from your MySQL install (C:\Program Files (x86)\MySQL\Connector J 5.1.31) to jars-core.</li>
+</ul>
+<h2><a name="Configuration">Configuration</a></h2>
+Define an environment variable 'GOPHER_USER' and set it equal to your name or some meaningful name.
+</p>
+Create the folder 'install-dir'/config/'name'.
+</p>
+Since we don�t add the Eclipse workspace or project files to the git repository,
+the first time you import Gopher into your workspace you will need to:
+<ul>
+<li>Add all jars in jars-core as external jars to the CLASSPATH.</li>
+</ul>
+You will only have to add the jars once per workspace.</br>
+Log4j.properties is under the source directory so it will be included in the CLASSPATH without any configuration step.</br>
+<h3><a name="Configuring Gopher For Hibernate">
+Configuring Gopher for Hibernate</a></h3>
+<ul>
+<li>Edit the config/hibernate.cfg file only if you are not using the defaults.
+</br>The password is not used. The user is root by default.</li>
+</ul>
+<h3><a name="Testing Gopher Hibernate">Testing Gopher Hibernate</a></h3>
+<ul>
+<li>At the mysql prompt enter:<br/>
+"source �gopher-install�/db_scripts/create-db-gopher.sql".<br/>
+This will create the database �gopher� and its tables.</li>
+<li>In Eclipse, clean and build.  Verify there are no errors.</li>
+<li>In Eclipse, run test-data/unit/�Persistence_Suite.xml� as a TestNG suite.</br>
+This will run all the persistence unit tests. Verify there no errors.</li>
+</ul>
+<h3><a name="Defining Tests">Defining Tests</a></h3>
+Gopher tests are database-driven and may be defined in XML. The DTD for Gopher data XML is:
+<p>"�gopher-install�/src/gopher-data.dtd".</p>
+The primary elements are suite, test-suite, test-class, test-case, test-data-type, test-data and test-run.</br>
+These elements correspond to relational tables and to Java classes mapped by Hibernate. 
+<h4>
+suite
+</h4>
+A suite is a collection of test-suite.
+It serves to group test-suites according to some theme. </br>
+Some themes could be :</br>
+�All test-suites on DANY production�,</br>
+�All test-suites on DANY qa� or</br>
+�All test-suites on DANY beta�.  </br>
+Here is a suite with one test-suite:
+<xmp>
+<suite>
+	<id>Example_0</id>
+	<name>An example suite</name>
+	<!--URLs and browsers may be defined in decorators. -->
+	<test-suite-decorator-id>Example_0</test-suite-decorator-id>
+	<test-suite-id>TermsOfUse_0</test-suite-id>
+</suite>
+</xmp>
+<h4>
+test-suite
+</h4>
+A test-suite is a collection of test-class. It serves to group test classes according to some theme.</br>
+Some themes could be : �All test classes�, �All classes Prod�, �All classes QA� or �All classes Prod 1.50�.</br>
+Here is a suite with one class:
+<xmp>
+<test-suite>
+	<id>TermsOfUse_0</id>
+	<name> An example suite</name>
+	<test-class-id>TermsOfUse_0</test-class-id>
+	<!--URLs and browsers may be defined in decorators.
+	A decorator here would take precidence over a test-suite-decorator.-->
+	<test-class-decorator-id>TermsOfUse_0</test-class-decorator-id>
+</test-suite>
+</xmp>
+<h4>
+test-class
+</h4>
+A test-class represents executable code (a Java class) and definitions of its arguments.
+Here is a class with one argument:
+<xmp>
+<test-class>
+	<id>TermsOfUse_0</id>
+	<name>TermsOfUse</name>
+	<class-name>com.echostar.dany.suites.TermsOfUse_Test</class-name>
+	<test-data-type-id>TermsOfUse_0</test-data-type>
+</test-class>
+</xmp>
+<h4>
+test-data-type
+</h4>
+A test-data-type defines an argument for a test-class:
+<xmp>
+<test-data-type>
+	<id>TermsOfUse_0</id>
+	<name>Header.MyDVR.Path</name>
+	<type>STRING</type>
+	<role>LABEL</role>
+</test-data-type>
+</xmp>
+It does not define the run-time value.
+<p>
+Java test class methods will find their data values by the test-data-type name:
+<p>String value = testCase.getDataValue("Header.MyDVR.Path");</p>
+There are enumerations for �type� and �role�. �type� may be one of 
+<p>com.echostar.gopher.persist.DataTypeEnum</p>
+and �role� may be one of
+<p>com.echostar.gopher.persist.DataRoleEnum.
+<h4>
+test-case
+</h4>
+A test-case relates test-data and element-locators with a test-class. Test-cases allow test-classes to be run with multiple sets of data:
+<xmp>
+<test-case>
+	<id>TermsOfUse_0</id>
+	<name>Terms Of Use</name>
+	<test-data-id>TermsOfUse_0</test-data-id>
+	<element-locator-id>TermsOfUse_0</element-locator-id>
+</test-case>
+</xmp>
+<h4>
+test-data
+</h4>
+A test-data represents a test-case argument value:
+<xmp>
+<test-data>
+	<id>TermsOfUse_0</id>
+	<value>Here is the terms of use text</value>
+	<test-data-type-id>TermsOfUse_0</test-data-type-id>
+</test-data>
+</xmp>
+It relates to one test-data-type on the test-class.
+<h4>
+element-locator
+</h4>
+An element-locator corresponds to Selenium element locator type.
+Element locators are used by the test-class and GopherDriverAPI
+to locate elements on a page.
+<xmp>
+<element-locator>
+	<id>TermsOfUse_0</id>
+	<locator-type>XPATH</locator-type>
+	<name>DANY_TermsOfUse_Text_XPath</name>
+	<value>//*[@id='terms']</value>
+	<description>XPATH to the 'Terms Of Use' Text</description>
+</element-locator>
+</xmp>
+<h4>
+test-run
+</h4>
+A test-run relates a test-case to a particular url, Selenium node and browser:
+<xmp>
+<test-run>
+	<id>1</id>
+	<url>http://dishanywhere.com</url>
+	<node-ip>127.43.87.42</node-ip>
+	<node-port>4444</node-port>
+	<platform>windows</platform>
+	<browser>firefox</browser>	
+	<test-case-id>TermsOfUse_0</test-case-id>
+</test-run>
+</xmp>
+The ids used in the XML are relative to the set of ingest files only.
+They are not the same ids Hibernate will generate.
+Make sure the ids you use are consistent across all the files to be ingested.
+<p>
+A useful theme is to assign the test-suite, test-class and test_case ids
+the test-class name followed by "_'N'" where 'N' is a number with the first instance 0.
+In the above examples we used 'TermsOfUse_0.'
+</p>
+We only insert/create data via XML. Update, Alter and Delete are not supported.
+To change your test data for development, re-run create-db-gopher.sql and re-ingest your data.
+<p>
+Production test data will not be dropped and re-created once the new Gopher framework is installed in production and stable.  We will be able to use the ingest tool if the only changes are inserts. Otherwise we will write a specific SQL update script. 
+</p>
+<h3>
+Ingesting Test Data
+</h3>
+After defining the test data, it needs to be ingested. The utility for ingesting the data is:
+<p>com.echostar.gopher.util.GopherDataIngest</p>
+<xmp>
+Usage: GopherDataIngest ['file1;file2' or 'dir1;dir2' or 'file1;dir1'] -dtd 'dtdFile'
+where 'file*' is the path to a XML file containing Gopher data definitions.
+where 'dir*' is the path to a directory containing Gopher data definitions files.
+where 'dtdFile' is the name of an optional DTD file containing Gopher data XML schema.
+If the DTD is not specified GopherDataIngest will look for it in the CLASSPATH.
+Use this approach normally.
+</xmp>
+GopherDataIngest takes two arguments - a file/directory list and an optional DTD.
+The file argument may be a single file, a single directory containing XML files, multiple files, multiple directories or any combination of files and directories.
+The ingest does not decend through directories.
+<p>
+The DTD for Gopher data is<br/>
+<xmp>"�gopher-install�/src/gopher-data.dtd".</xmp>
+You should use the DTD as it will catch many common mistakes.
+</p>
+Here is a typical ingest call:
+<xmp>GopherDataIngest test-data;test-data/'userName'</xmp>
+
+where 'userName' is the developer's login acount name.
+User and environment-specific XML like test-nodes should be placed in this directory.</br>
+Currently a set of test-runs representing all combinations of browsers supported by the test-nodes are created for all test-cases.
+One may also code test-runs in XML but we are not using this at the moment. 
+<h3>
+Running the TestNG Suite Writer
+</h3>
+TestNG suite files are needed to run TestNG suites. TestNG suite files may now be generated based on the suites in the database. The tool is:
+<p>com.echostar.gopher.testng.TestNGSuiteWriter</p>
+TestNGSuiteWriter takes no arguments. It finds all test suites in the database and creates a �suite name�.xml file for each.
+These files should not be checked in because they are generated on demand.
+It generates "testng.xml" as well.
+<h2><a name="Developing Test Classes">Developing Test Classes</a></h2>
+Gopher supports TestNG tests. Test classes should extend:
+<p>com.echostar.gopher.testng.TestNGClassBase</p>
+This class performs services required by Gopher and TestNG so that the test class can perform test steps only.
+<br/>Some services are:
+<p><ul>
+<li>Initializes GopherDriverAPI, GopherData and Config</li>
+<li>Provides a generic test method "doWrapTest" which calls a stub "doTest" to be over-ridden by the subclass to perform the test.</li> 
+<li>Provides a generic DataProvider that delivers the test data in the same way for all test subclasses. </li>
+<li>Creates a TestRunResult object and stores it in the database.</li>
+<li>Skips the test if any runmode is false in the relation chain.
+</ul></p>
+</body>
+</html>
