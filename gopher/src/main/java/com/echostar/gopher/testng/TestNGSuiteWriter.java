@@ -30,7 +30,7 @@ public class TestNGSuiteWriter {
 
 	private GopherData gopherData;
 	// Path to the dir to contain the generated suite files
-	private String     suiteDirPath = "test-data/suites";
+	private String     suiteDirPath = "src/test/resources/suites";
 
 	/**
 	 * Create the suites directory if it does not exist and get the GopherData
@@ -43,7 +43,7 @@ public class TestNGSuiteWriter {
 	    if (suiteDirPath != null) {
 	        this.suiteDirPath = suiteDirPath;
 	    }
-	    File suiteDir = new File (suiteDirPath);
+	    File suiteDir = new File (this.suiteDirPath);
 	    if (!suiteDir.exists()) {
 	    	suiteDir.mkdir();
 	    }
