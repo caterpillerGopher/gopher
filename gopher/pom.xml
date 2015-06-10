@@ -14,6 +14,45 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<!-- NOTE(grant): Build specifications
+	<build>
+		 NOTE(grant): Notes about plugins
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.6</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		
+		 NOTE(grant): Setting plugins up as goals 
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<archive>
+						<index>true</index>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+						<manifestEntries>
+							<mode>development</mode>
+							<url>${project.url}</url>
+							<key>value</key>
+						</manifestEntries>
+					</archive>
+					<includes>
+
+					</includes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>-->
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -108,8 +147,16 @@
 		<dependency>
 			<groupId>xml-apis</groupId>
 			<artifactId>xml-apis</artifactId>
-			<version>1.3.04</version>
+			<version>1.4.01</version>
 		</dependency>
 
+		<!-- NOTE(grant): Have the maven plugin for jar as a dependancy. However, 
+			note that it is of type: maven-plugin -->
+		<!--<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-jar-plugin</artifactId>
+			<version>2.6</version>
+			<type>maven-plugin</type>
+		</dependency>-->
 	</dependencies>
 </project>

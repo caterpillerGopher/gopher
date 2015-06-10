@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.apache.log4j.Logger;
+import org.openqa.grid.internal.utils.GridHubConfiguration;
+import org.openqa.grid.web.Hub;
 
 /**
  * Start or stop the Selenium webdriver nodes from a windows machine.
@@ -291,11 +293,11 @@ public class SetupGrid {
 	 */
 	public static boolean startHub(String seleniumJarLocation) throws Exception {
 		log.info("Starting hub on localhost");
-		int returnvalue = 0;
+		int returnvalue = 0;		
+		
 		Process p;
 		String command = "";
-		command = "java -jar " + System.getProperty("user.dir") + "//"
-				+ seleniumJarLocation + " -role hub";// +">%temp%\\sel.txt %temp%\\err.txt 2<&1";
+		command = "java -jar " + seleniumJarLocation + " -role hub";
 		log.info(command);
 		try {
 			p = Runtime.getRuntime().exec(command);
