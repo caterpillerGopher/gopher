@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="DataProvider_Suite">
+
+	<listeners>
+		<listener class-name="com.echostar.gopher.testng.TestsListenerAdapter"/>
+	</listeners>
+	<suite-files>
+		<parameter name="suiteName"  value="DataProvider_Suite"/>
+		<parameter name="suiteVersion"  value="1.0"/>
+		<suite-file path="DataProvider2_TestSuite.xml"/>
+	</suite-files>
+
+</suite>

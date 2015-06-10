@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="DataProvider2_TestSuite">
+	<listeners>
+		<listener class-name="com.echostar.gopher.testng.TestsListenerAdapter"/>
+	</listeners>
+	<parameter name="url"  value="suite-url"/>
+	<parameter name="browser"  value="FIREFOX"/>
+	<test name="A class name">
+		<classes>
+			<class name="com.echostar.gopher.test.DataProvider2_Test"></class>
+		</classes>
+	</test>
+</suite>
