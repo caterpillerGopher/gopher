@@ -15,7 +15,7 @@ import org.hibernate.cfg.Configuration;
 /**
  * An implementation of {@link GopherData GopherData}.
  * Load Hibernate properties from
- * System.getProperty("user.dir")+"/config/hibernate.cfg.gopher.xml".
+ * System.getProperty("user.dir")+"/src/main/config/hibernate.cfg.gopher.xml".
  *
  * @author charles.young
  *

@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.apache.log4j.Logger;
-import org.openqa.grid.internal.utils.GridHubConfiguration;
-import org.openqa.grid.web.Hub;
 
 /**
  * Start or stop the Selenium webdriver nodes from a windows machine.
