@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -11,26 +12,113 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import com.echostar.gopher.util.Config;
 
 /**
  * An implementation of {@link GopherData GopherData}.
- * Load Hibernate properties from
- * System.getProperty("user.dir")+"/src/main/config/hibernate.cfg.gopher.xml".
  *
  * @author charles.young
  *
  */
 public class GopherDataImpl implements GopherData {
 
+	protected static Logger			rootLog;
 	protected static Configuration	hibernateConfig;
 	protected static SessionFactory	hibernateSessionFactory;
 	protected Session				hibernateSession;
 
+	/**
+	 * The default directory 'src/main/config' containing the Hibernate config file.
+	 * @see #getHibernateConfigDir()
+	 */
+	public static final String DEFAULT_HIBERNATE_CONFIG_DIR = "src/main/config";
+
+	/**
+	 * The default Hibernate config file name 'hibernate.cfg.gopher.xml'.
+	 * @see #getHibernateConfigFileName()
+	 */
+	public static final String DEFAULT_HIBERNATE_CONFIG_FILE = "hibernate.cfg.gopher.xml";
+
+	/**
+	 * Name of {@link com.echostar.gopher.util.Config Config} property defining the name of the
+	 * directory containing the Hibernate config file.
+	 * </p>
+	 * This need not be the actual directory.
+	 * It may be a higher level directory.
+	 * In this case the config file name must be a path to the config file relative to the directory.
+	 *
+	 * @see #getHibernateConfigDir()
+	 */
+	public static final String HIBERNATE_CONFIG_DIR_PROP = "hibernate.config.dir";
+
+	/**
+	 * Name of {@link com.echostar.gopher.util.Config Config} property defining the name of the
+	 * Hibernate config file.
+	 *
+	 * @see #getHibernateConfigFileName()
+	 */
+	public static final String HIBERNATE_CONFIG_FILE_NAME_PROP = "hibernate.config.fileName";
+
 	static {
+		rootLog = Logger.getRootLogger();
+
 		hibernateConfig = new Configuration();
-        hibernateConfig.configure (new File(System.getProperty("user.dir")+"/src/main/config/hibernate.cfg.gopher.xml"));
+
+		String hibernateConfigDir = getHibernateConfigDir();
+
+		String hibernateConfigFileName = getHibernateConfigFileName();
+
+        hibernateConfig.configure (new File(hibernateConfigDir+"/"+hibernateConfigFileName));
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(hibernateConfig.getProperties());
 		hibernateSessionFactory = hibernateConfig.buildSessionFactory(ssrb.build());
+	}
+
+	/**
+	 * Get the name of the directory containing the Hibernate config file.
+	 * This name plus "/" plus {@link getHibernateConfigFileName getHibernateConfigFileName}
+	 * must define the complete path to the Hibernate config file.
+	 * </p>
+	 * The config dir may be defined with a {@link com.echostar.gopher.util.Config Config} property
+	 * {@link #HIBERNATE_CONFIG_DIR_PROP HIBERNATE_CONFIG_DIR_PROP}.
+	 * </p>
+	 * The default directory is "src/main/config".
+	 *
+	 * @return	the directory name
+	 */
+	public static String getHibernateConfigDir () {
+		
+		String hibernateConfigDir = DEFAULT_HIBERNATE_CONFIG_DIR;
+		try {
+			hibernateConfigDir = Config.getProperty_S(HIBERNATE_CONFIG_DIR_PROP);
+			rootLog.debug("Using '"+hibernateConfigDir+"' as Hibernate config directory.");
+		} catch (Exception e) {
+			rootLog.warn("Property '"+HIBERNATE_CONFIG_DIR_PROP+"' not found in Config.\nDefaulting to '"+hibernateConfigDir+"'.");
+		}
+		return hibernateConfigDir;
+	}
+
+	/**
+	 * Get the name of the Hibernate config file.
+	 * The {@link getHibernateConfigDir getHibernateConfigDir} plus "/" plus this name
+	 * must define the complete path to the Hibernate config file.
+	 * </p>
+	 * The name may be defined with a {@link com.echostar.gopher.util.Config Config} property
+	 * {@link #HIBERNATE_CONFIG_FILE_NAME_PROP HIBERNATE_CONFIG_FILE_NAME_PROP}.
+	 * </p>
+	 * The default name is "hibernate.cfg.gopher.xml".
+	 *
+	 * @return	the file name relative to the Hibernate config dir
+	 */
+	public static String getHibernateConfigFileName () {
+		
+		String hibernateConfigFileName = DEFAULT_HIBERNATE_CONFIG_FILE;
+		try {
+			hibernateConfigFileName = Config.getProperty_S(HIBERNATE_CONFIG_FILE_NAME_PROP);
+			rootLog.debug("Using '"+hibernateConfigFileName+"' as Hibernate config file name.");
+		} catch (Exception e) {
+			rootLog.warn("Property '"+HIBERNATE_CONFIG_FILE_NAME_PROP+"' not found in Config.\nDefaulting to '"+hibernateConfigFileName+"'.");			
+		}
+		return hibernateConfigFileName;
 	}
 
 	public GopherDataImpl () {
