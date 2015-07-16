@@ -1,0 +1,35 @@
+Gopher Configuration - Development
+----------------------------------
+
+Object                      Type                         Realization                                         Approach
+------                      ----                         -----------                                         --------
+
+GOPHER_USER                 Environment variable         'a user-defined name'                               Environment
+
+Gopher Properties           Property files               src/main/config/gopher.properties                   relative path
+                                                         src/main/config/$GOPHER_USER/gopher.properties      relative path
+
+Hibernate config file       XML file                     src/main/config/hibernate.cfg.gopher.xml            Gopher property
+
+Log4j property file         Property file                src/main/java/log4j.properties                      CLASSPATH
+
+Gopher model XML DTD        DTD file                     src/main/java/gopher-data.dtd                       CLASSPATH
+
+
+Gopher Configuration - Deployment
+---------------------------------
+
+Object                      Type                         Realization                                         Approach
+------                      ----                         -----------                                         --------
+
+GOPHER_USER                 Environment variable         'a user-defined name'                               Environment
+
+Gopher Properties           Property file                config/gopher.properties                            relative path
+                                                         config/$GOPHER_USER/gopher.properties               relative path
+
+Hibernate config file       XML file                     $APP_INSTALL/config/hibernate.cfg.gopher.xml        Gopher property
+
+Log4j property file         Property file                ?/log4j.properties                                  CLASSPATH
+
+Gopher model XML DTD        DTD file                     ?/gopher-data.dtd                                   CLASSPATH
+
