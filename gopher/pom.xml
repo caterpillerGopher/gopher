@@ -10,49 +10,6 @@
 	<name>gopher</name>
 	<url>http://maven.apache.org</url>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
-	<!-- NOTE(grant): Build specifications
-	<build>
-		 NOTE(grant): Notes about plugins
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.6</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-		
-		 NOTE(grant): Setting plugins up as goals 
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-					<archive>
-						<index>true</index>
-						<manifest>
-							<addClasspath>true</addClasspath>
-						</manifest>
-						<manifestEntries>
-							<mode>development</mode>
-							<url>${project.url}</url>
-							<key>value</key>
-						</manifestEntries>
-					</archive>
-					<includes>
-
-					</includes>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>-->
-
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -85,11 +42,11 @@
 		</dependency>
 
 		<dependency>
-        	<groupId>org.seleniumhq.selenium</groupId>
-        	<artifactId>selenium-server</artifactId>
-        	<version>2.46.0</version>
-    	</dependency> 
-		
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-server</artifactId>
+			<version>2.46.0</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.jboss.logging</groupId>
 			<artifactId>jboss-logging</artifactId>
@@ -152,11 +109,80 @@
 
 		<!-- NOTE(grant): Have the maven plugin for jar as a dependancy. However, 
 			note that it is of type: maven-plugin -->
-		<!--<dependency>
+		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-jar-plugin</artifactId>
 			<version>2.6</version>
 			<type>maven-plugin</type>
-		</dependency>-->
+		</dependency>
 	</dependencies>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<!-- NOTE(grant): Build specifications -->
+	<build>
+		<!-- NOTE(grant): Notes about plugins -->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.6</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<!-- NOTE(grant): What other resources will be "compiled" or put into the 
+			target folder -->
+		<resources>
+			<resource>
+				<directory>src</directory>
+				<includes>
+					<include>main\config\**\*.properties</include>
+					<include>main\config\**\*.xml</include>
+					<include>main\config\**\*.xsl</include>
+					<include>main\scripts\*.sql</include>
+					<include>main\scripts\*.bat</include>
+					<include>main\java\**\*.dtd</include>
+					<include>main\java\**\*.properties</include>
+					<include>test\resources\**\*.xml</include>
+					<include>test\resources\**\*.properties</include>
+					<include>**\*.java</include>
+				</includes>
+				<excludes>
+					<exclude>test\resources\ingest\**\*.*</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
+		<!-- NOTE(grant): Setting plugins up as goals -->
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<jarName>gopher</jarName>
+					<archive>
+						<index>true</index>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+					<includes>
+						<!-- Directory: gopher\target\classes -->
+						<include>**\*.class</include>
+						<include>**\*.dtd</include>
+						<include>**\*.properties</include>
+						<include>**\*.xml</include>
+						<include>**\*.xsl</include>
+						<include>**\*.java</include>
+						<include>**\*.sql</include>
+						<include>**\*.bat</include>
+					</includes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
