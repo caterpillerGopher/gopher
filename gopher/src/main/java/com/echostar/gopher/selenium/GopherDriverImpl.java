@@ -331,9 +331,8 @@ public class GopherDriverImpl implements GopherDriver {
         sleep("Sleep.GopherDriver.stopDriver"); //$NON-NLS-1$
 		log.info("Closing the browser"); //$NON-NLS-1$
 		try {
-		    driver.close();
-			driver.quit();
-
+		     driver.close();
+			 driver = null;
 		} catch (Exception e) {
 
             log.error("Exception while closing the browser: '"+e.getMessage()+"'."); //$NON-NLS-1$ //$NON-NLS-2$
