@@ -263,18 +263,18 @@ public class DataProvider_Test extends TestNGClassBase {
 			try {
 				SuiteInstance suiteInstance = SuiteListenerAdaptor.getSuiteInstance(gopherData);
 				if (suiteInstance != null) {
-					Assert.assertNotNull(suiteInstance);
+					Assert.assertNotNull(suiteInstance, "SuiteInstance");
 					Suite suite = suiteInstance.getSuite();
-					Assert.assertNotNull(suite);
+					Assert.assertNotNull(suite, "Suite");
 					Assert.assertEquals(gopherData.findSuiteInstancesBySuite(
-						suite.getId()).size(), 1);
-					Assert.assertEquals(suite.getId(), this.suite.getId());
-					Assert.assertEquals(suite.getName(), this.suite.getName());
-					Assert.assertEquals(suite.getVersion(), this.suite.getVersion());
-					Assert.assertEquals(suite.getTestSuites().size(), 1);
+						suite.getId()).size(), 1, "(SuiteInstances by Suite).size");
+					Assert.assertEquals(suite.getId(), this.suite.getId(), "Suite.id");
+					Assert.assertEquals(suite.getName(), this.suite.getName(), "Suite.name");
+					Assert.assertEquals(suite.getVersion(), this.suite.getVersion(), "Suite.version");
+					Assert.assertEquals(suite.getTestSuites().size(), 1, "Suite.TestSuites");
 					TestSuite ts = suite.getTestSuites().iterator().next();
-					Assert.assertEquals(ts.getId(), this.testSuite.getId());
-					Assert.assertTrue(suiteInstance.getTestSuiteInstances().size() == 1);
+					Assert.assertEquals(ts.getId(), this.testSuite.getId(), "TestSuite.id");
+					Assert.assertTrue(suiteInstance.getTestSuiteInstances().size() == 1, "SuiteInstances.TestSuiteInstances.size");
 				}
 			} catch (AssertionError e) {
 				log.error("Suite comparison result unexpected.");
