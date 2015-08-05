@@ -21,7 +21,7 @@ import com.deetysoft.util.StreamGobbler;
  * DBBackup creates a directory structure below the root.
  * The structure is: 'year'/'month'/'day of month'.
  *
- * The file is written into the 'sec' directory and has the name:
+ * The file is written into the 'day of month' directory and has the name:
  * "gopher-db.'year'-'month'-'day of month'-'hour'-'minute'-'sec'.sql"
  *
  * If an error occurs with mysqldump, the file may be empty.
