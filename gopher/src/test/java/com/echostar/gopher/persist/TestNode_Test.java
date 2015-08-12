@@ -1,4 +1,4 @@
-package com.echostar.gopher.persist.test;
+package com.echostar.gopher.persist;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import com.echostar.gopher.persist.TestClass;
 import com.echostar.gopher.persist.TestNode;
 import com.echostar.gopher.persist.TestRun;
 
-public class TestRun_Test  extends TestClassBase {
+public class TestNode_Test  extends TestClassBase {
 
 	@Test
 	public static void testCreate () throws Exception {
@@ -27,9 +27,8 @@ public class TestRun_Test  extends TestClassBase {
 
 		Transaction tran = hibernateSession.beginTransaction();
 
-		TestClass testClass = new TestClass("AnExampleTestClass", "a version",
-			"com.echostar.gopher.dany.AnExampleTestClass",
-			"an example TestClass", Boolean.TRUE, "a Jira issue");
+		TestClass testClass = new TestClass("AnExampleTestClass", "a version", "com.echostar.gopher.dany.AnExampleTestClass",
+				"an example TestClass", Boolean.TRUE, "a Jira issue");
 		Long testClassId = (Long) hibernateSession.save(testClass);
 		testClass.setId (testClassId);
 
@@ -43,7 +42,7 @@ public class TestRun_Test  extends TestClassBase {
 		testNode.setId(testNodeId);
 		
 		TestNode testNode2 = new TestNode (PlatformEnum.WIN7, "10.79.82.142", "4445",
-				"another user", "another password", "another install dir", "another selenium server");
+				"a user", "a password", "an install dir", "the selenium server");
 		Long testNode2Id = (Long) hibernateSession.save(testNode);
 		testNode2.setId(testNode2Id);
 		

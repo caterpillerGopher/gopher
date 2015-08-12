@@ -4,50 +4,50 @@
 
 	<test name="TestClass_Test">
 		<classes>
-			<class name="com.echostar.gopher.persist.test.TestClass_Test"></class>
+			<class name="com.echostar.gopher.persist.TestClass_Test"></class>
 		</classes>
 	</test> 
 
 	<test name="TestSuite_Test">
 		<classes>
-			<class name="com.echostar.gopher.persist.test.TestSuite_Test"></class>
+			<class name="com.echostar.gopher.persist.TestSuite_Test"></class>
 		</classes>
 	</test> 
 
 
 	<test name="TestDataType_Test">
 		<classes>
-			<class name="com.echostar.gopher.persist.test.TestDataType_Test"></class>
+			<class name="com.echostar.gopher.persist.TestDataType_Test"></class>
 		</classes>
 	</test> 
 
 	<test name="TestData_Test">
 		<classes>
-			<class name="com.echostar.gopher.persist.test.TestData_Test"></class>
+			<class name="com.echostar.gopher.persist.TestData_Test"></class>
 		</classes>
 	</test> 
 
 	<test name="TestCase_Test">
 		<classes>
-			<class name="com.echostar.gopher.persist.test.TestCase_Test"></class>
+			<class name="com.echostar.gopher.persist.TestCase_Test"></class>
 		</classes>
 	</test> 
 
 	<test name="TestNode_Test">
 		<classes>
-			<class name="com.echostar.gopher.persist.test.TestNode_Test"></class>
+			<class name="com.echostar.gopher.persist.TestNode_Test"></class>
 		</classes>
 	</test> 
 
 	<test name="TestRun_Test">
 		<classes>
-			<class name="com.echostar.gopher.persist.test.TestRun_Test"></class>
+			<class name="com.echostar.gopher.persist.TestRun_Test"></class>
 		</classes>
 	</test> 
 	
 	<test name="TestRunResult_Test">
 		<classes>
-			<class name="com.echostar.gopher.persist.test.TestRunResult_Test"></class>
+			<class name="com.echostar.gopher.persist.TestRunResult_Test"></class>
 		</classes>
 	</test> 
 </suite>

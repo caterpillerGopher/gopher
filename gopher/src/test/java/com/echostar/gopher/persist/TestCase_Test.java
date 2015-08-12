@@ -1,4 +1,4 @@
-package com.echostar.gopher.persist.test;
+package com.echostar.gopher.persist;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package com.echostar.gopher.persist.test;
+package com.echostar.gopher.persist;
 
 import org.junit.BeforeClass;
 import org.testng.annotations.Parameters;

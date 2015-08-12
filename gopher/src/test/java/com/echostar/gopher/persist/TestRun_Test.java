@@ -1,7 +1,7 @@
-package com.echostar.gopher.persist.test;
+package com.echostar.gopher.persist;
 
-import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -12,13 +12,12 @@ import com.echostar.gopher.persist.BrowserEnum;
 import com.echostar.gopher.persist.GopherData;
 import com.echostar.gopher.persist.GopherDataFactory;
 import com.echostar.gopher.persist.PlatformEnum;
-import com.echostar.gopher.persist.TestClass;
 import com.echostar.gopher.persist.TestCase;
+import com.echostar.gopher.persist.TestClass;
 import com.echostar.gopher.persist.TestNode;
 import com.echostar.gopher.persist.TestRun;
-import com.echostar.gopher.persist.TestRunResult;
 
-public class TestRunResult_Test  extends TestClassBase {
+public class TestRun_Test  extends TestClassBase {
 
 	@Test
 	public static void testCreate () throws Exception {
@@ -29,8 +28,8 @@ public class TestRunResult_Test  extends TestClassBase {
 		Transaction tran = hibernateSession.beginTransaction();
 
 		TestClass testClass = new TestClass("AnExampleTestClass", "a version",
-				"com.echostar.gopher.dany.AnExampleTestClass",
-				"an example TestClass", Boolean.TRUE, "a Jira issue");
+			"com.echostar.gopher.dany.AnExampleTestClass",
+			"an example TestClass", Boolean.TRUE, "a Jira issue");
 		Long testClassId = (Long) hibernateSession.save(testClass);
 		testClass.setId (testClassId);
 
@@ -39,40 +38,46 @@ public class TestRunResult_Test  extends TestClassBase {
 		testCase.setId (testCaseId);
 
 		TestNode testNode = new TestNode (PlatformEnum.WIN7, "10.79.82.141", "4444",
-			"a user", "a password", "an install dir", "the selenium server");
+				"a user", "a password", "an install dir", "the selenium server");
 		Long testNodeId = (Long) hibernateSession.save(testNode);
 		testNode.setId(testNodeId);
-
+		
+		TestNode testNode2 = new TestNode (PlatformEnum.WIN7, "10.79.82.142", "4445",
+				"another user", "another password", "another install dir", "another selenium server");
+		Long testNode2Id = (Long) hibernateSession.save(testNode);
+		testNode2.setId(testNode2Id);
+		
 		TestRun testRun = new TestRun ("a url", BrowserEnum.FIREFOX, true, testCase, testNode);
 		Long testRunId = (Long) hibernateSession.save(testRun);
 		testRun.setId(testRunId);
 
-		TestRunResult testRunResult = new TestRunResult(true, "a message", new Date(), new Date(),
-			"a user name", "a url", testRun, null, null);
-		Long testRunResultId = (Long) hibernateSession.save(testRunResult);
-		testRunResult.setId (testRunResultId);
-
-		TestRunResult testRunResult2 = new TestRunResult(true, "another message", new Date(), new Date(),
-			"a user name", "a url", testRun, null, null);
-		Long testRunResult2Id = (Long) hibernateSession.save(testRunResult2);
-		testRunResult2.setId (testRunResult2Id);
-
-		hibernateSession.update(testRun);
+		TestRun testRun2 = new TestRun ("another url", BrowserEnum.FIREFOX, true, testCase, testNode2);
+		Long testRun2Id = (Long) hibernateSession.save(testRun2);
+		testRun2.setId(testRun2Id);
 
 		tran.commit();
 
-		Query query = hibernateSession.createQuery("FROM TestRun WHERE id=\'"+testRunId+"\'");
+	    Query query = hibernateSession.createQuery("FROM TestRun WHERE id=\'"+testRunId+"\'");
 		@SuppressWarnings("rawtypes")
 	    List results = query.list();
+		Assert.assertEquals(results.size(), 1);
 		TestRun actualTestRun = (TestRun) results.get(0);
 		Assert.assertNotNull(actualTestRun);
 		Assert.assertEquals(actualTestRun, testRun);
-		Assert.assertEquals(testRun.getTestNode(), testNode);
-		Assert.assertEquals(testRun.getTestCase(), testCase);
-		List<TestRunResult> actualRunResults =
-			gopherData.findTestRunResultsByTestRun (actualTestRun.getId());
-		Assert.assertTrue(actualRunResults.contains(testRunResult));
-		Assert.assertTrue(actualRunResults.contains(testRunResult2));
+		Assert.assertEquals(actualTestRun.getTestCase(), testCase);
+		Assert.assertEquals(actualTestRun.getTestCase().getTestClass(), testClass);
+		Assert.assertEquals(actualTestRun.getTestNode(), testNode);
+
+	    query = hibernateSession.createQuery("FROM TestRun WHERE id=\'"+testRun2Id+"\'");
+		//@SuppressWarnings("rawtypes")
+	    results = query.list();
+		Assert.assertEquals(results.size(), 1);
+		actualTestRun = (TestRun) results.get(0);
+		Assert.assertNotNull(actualTestRun);
+		Assert.assertEquals(actualTestRun, testRun2);
+		Assert.assertEquals(actualTestRun.getTestCase(), testCase);
+		Assert.assertEquals(actualTestRun.getTestCase().getTestClass(), testClass);
+		Assert.assertEquals(actualTestRun.getTestNode(), testNode2);
 	}
 
 	@Test
@@ -90,32 +95,18 @@ public class TestRunResult_Test  extends TestClassBase {
 		TestCase testCase = gopherData.createTestCase ("A case name", "a version", true, testClass, null);
 
 		TestNode testNode = gopherData.createTestNode (PlatformEnum.WIN7, "10.79.82.141", "4444",
-			"a user", "a password", "an install dir", "the selenium server");
+				"a user", "a password", "an install dir", "the selenium server");
 
 		TestRun testRun = gopherData.createTestRun("a url", BrowserEnum.CHROME, true, testCase, testNode);
-		
-		TestRunResult testRunResult = gopherData.createTestRunResult(true, "a message", new Date(), new Date(),
-			"a user name", "a url", testRun, null, null);
-		TestRunResult testRunResult2 = gopherData.createTestRunResult(true, "another message", new Date(), new Date(),
-			"a user name", "a url", testRun, null, null);
 
 		tran.commit();
-
-		// Verify the TestRunResults were inserted.
-		List<TestRunResult> testRunResults = gopherData.findTestRunResultsByTestClass(testClass.getId());
-		Assert.assertEquals(testRunResults.size(), 2);
 
 		Query query = hibernateSession.createQuery("FROM TestRun WHERE id=\'"+testRun.getId()+"\'");
 		@SuppressWarnings("rawtypes")
 	    List results = query.list();
 		TestRun actualTestRun = (TestRun) results.get(0);
 		Assert.assertNotNull(actualTestRun);
-		Assert.assertEquals(actualTestRun, testRun);
-		Assert.assertEquals(testRun.getTestNode(), testNode);
-		Assert.assertEquals(testRun.getTestCase(), testCase);
-		List<TestRunResult> actualRunResults =
-			gopherData.findTestRunResultsByTestRun(actualTestRun.getId());
-		Assert.assertTrue(actualRunResults.contains(testRunResult));
-		Assert.assertTrue(actualRunResults.contains(testRunResult2));
+		Assert.assertEquals(actualTestRun.getTestCase(), testCase);
+		Assert.assertEquals(testCase.getTestClass(), testClass);
 	}
 }
