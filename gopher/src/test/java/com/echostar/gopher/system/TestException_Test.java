@@ -1,4 +1,4 @@
-package com.echostar.gopher.test;
+package com.echostar.gopher.system;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,6 @@ import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
 
-import com.echostar.gopher.exception.LocatorException;
 import com.echostar.gopher.exception.TestException;
 import com.echostar.gopher.persist.BrowserEnum;
 import com.echostar.gopher.persist.GopherData;
@@ -23,14 +22,14 @@ import com.echostar.gopher.testng.ErrorUtil;
 import com.echostar.gopher.testng.TestNGClassBase;
 import com.echostar.gopher.util.ExceptionUtil;
 
-public class LocatorException_Test extends TestNGClassBase {
+public class TestException_Test extends TestNGClassBase {
 
 	private TestRun testRun;
 	private TestClass testClass;
 	private TestCase testCase;
 	private TestSuite testSuite;
 
-	protected LocatorException_Test() throws Exception {
+	public TestException_Test () throws Exception {
 		super();
 	}
 
@@ -75,7 +74,7 @@ public class LocatorException_Test extends TestNGClassBase {
 			// Create a TestSuite.
 			List<TestClass> testClasses = new ArrayList<TestClass>();
 			testClasses.add(testClass);
-			testSuite = gopherData.createTestSuite ("LocatorException_TestSuite", "version", "desc",
+			testSuite = gopherData.createTestSuite ("TestException_TestSuite", "version", "desc",
 				true, testClasses);
 
 			List<TestSuite> testSuites = new ArrayList<TestSuite>();
@@ -83,7 +82,6 @@ public class LocatorException_Test extends TestNGClassBase {
 			testClass.setTestSuites(testSuites);
 			hibernateSession.update(testClass);
 
-			// Create a Suite.
 			List<TestSuite> testSuites_ = new ArrayList<TestSuite>();
 			testSuites_.add(testSuite);
 			gopherData.createSuite("Exception_Suite", "1.0", "description", true,
@@ -125,7 +123,7 @@ public class LocatorException_Test extends TestNGClassBase {
 			com.echostar.gopher.persist.TestException testException =
 				testRunResult.getTestExceptions().iterator().next();
 			Assert.assertEquals(testException.getExceptionClass(),
-				"com.echostar.gopher.exception.LocatorException");
+				"com.echostar.gopher.exception.TestException");
 		} catch (AssertionError e) {
 			log.error(ExceptionUtil.getStackTraceString(e, 10000));
 			ErrorUtil.addVerificationFailure(e);
@@ -160,10 +158,10 @@ public class LocatorException_Test extends TestNGClassBase {
 
 		GopherData gopherData = null;
 		try {
-			log.info("Adding exception to verification failures.");
-			LocatorException te = new LocatorException ("LocatorException_Test.");
+			//gopherData = GopherDataFactory.getGopherData();
+			TestException te = new TestException ("TestException test.");
 			ErrorUtil.addVerificationFailure(te);
-			//throw te;
+			throw te;
 		} finally {
 			if (gopherData != null) {
 				gopherData.close();

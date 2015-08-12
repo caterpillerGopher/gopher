@@ -1,4 +1,4 @@
-package com.echostar.gopher.test;
+package com.echostar.gopher.system;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,7 +33,12 @@ import com.echostar.gopher.testng.SuiteListenerAdaptor;
 import com.echostar.gopher.testng.TestNGClassBase;
 import com.echostar.gopher.util.ExceptionUtil;
 
-public class DataProvider2_Test extends TestNGClassBase {
+/**
+ * Test the {@link TestNGClassBase TestNGClassBase}.
+ * @author greg
+ *
+ */
+public class DataProvider_Test extends TestNGClassBase {
 
 	private Suite suite;
 	private TestSuite testSuite;
@@ -47,12 +52,12 @@ public class DataProvider2_Test extends TestNGClassBase {
 	private List<TestRun> testRuns = new ArrayList<TestRun>();
 	private List<TestNode> testNodes = new ArrayList<TestNode>();
 
-	public DataProvider2_Test () throws Exception {
+	DataProvider_Test () throws Exception {
 		super ();
 	}
 
 	/**
-	 * Override Super. Mock all necessary data.
+	 * Override super. Mock all necessary data.
 	 * @throws	Exception	on error
 	 */
 	public void mockData (ITestContext context, String suiteName, String suiteVersion) throws Exception {
@@ -135,7 +140,7 @@ public class DataProvider2_Test extends TestNGClassBase {
 			// Create a TestSuite.
 			List<TestClass> testClasses = new ArrayList<TestClass>();
 			testClasses.add(testClass);
-			testSuite = gopherData.createTestSuite ("DataProvider2_TestSuite", "version", "desc",
+			testSuite = gopherData.createTestSuite ("DataProvider_TestSuite", "version", "desc",
 				true, testClasses);
 
 			List<TestSuite> testSuites = new ArrayList<TestSuite>();
@@ -188,7 +193,7 @@ public class DataProvider2_Test extends TestNGClassBase {
 			gopherData = GopherDataFactory.getGopherData();
 			log.debug("afterSuite getting suiteInstance.");
 			SuiteInstance suiteInstance = SuiteListenerAdaptor.getSuiteInstance(gopherData);
-			log.debug("afterSuite got suiteInstance.");
+			log.debug("afterSuite got suiteInstance "+suiteInstance+".");
 			if (suiteInstance != null) {
 				log.debug("afterSuite suiteInstance not null.");
 				Assert.assertEquals(suiteInstance.getTestRunResults().size(), 2);
@@ -206,8 +211,10 @@ public class DataProvider2_Test extends TestNGClassBase {
 				SuiteInstance si = testSuiteInstance.getSuiteInstance();
 				Assert.assertEquals(si.getId(), suiteInstance.getId());
 				Assert.assertNotNull(testSuiteInstance.getTestSuite());
+				Assert.assertEquals(testSuiteInstance.getTestSuite().getId(),testSuite.getId());
 			}
 			List<TestSuiteInstance> testSuiteInstances = gopherData.findAllTestSuiteInstances();
+			log.debug("afterSuite got testSuiteInstances.");
 			Assert.assertEquals(testSuiteInstances.size(), 1);
 			TestSuiteInstance testSuiteInstance = testSuiteInstances.iterator().next();
 			List<TestRunResult> testRunResults = testSuiteInstance.getTestRunResults();
@@ -256,17 +263,18 @@ public class DataProvider2_Test extends TestNGClassBase {
 			try {
 				SuiteInstance suiteInstance = SuiteListenerAdaptor.getSuiteInstance(gopherData);
 				if (suiteInstance != null) {
+					Assert.assertNotNull(suiteInstance, "SuiteInstance");
 					Suite suite = suiteInstance.getSuite();
 					Assert.assertNotNull(suite, "Suite");
 					Assert.assertEquals(gopherData.findSuiteInstancesBySuite(
-							suite.getId()).size(), 1, "(SuiteInstances by Suite id).size");
+						suite.getId()).size(), 1, "(SuiteInstances by Suite).size");
 					Assert.assertEquals(suite.getId(), this.suite.getId(), "Suite.id");
 					Assert.assertEquals(suite.getName(), this.suite.getName(), "Suite.name");
 					Assert.assertEquals(suite.getVersion(), this.suite.getVersion(), "Suite.version");
-					Assert.assertEquals(suite.getTestSuites().size(), 1, "Suite.TestSuites.size");
+					Assert.assertEquals(suite.getTestSuites().size(), 1, "Suite.TestSuites");
 					TestSuite ts = suite.getTestSuites().iterator().next();
 					Assert.assertEquals(ts.getId(), this.testSuite.getId(), "TestSuite.id");
-					Assert.assertTrue(suiteInstance.getTestSuiteInstances().size() == 1, "SuiteInstance.TestSuiteInstances.size");
+					Assert.assertTrue(suiteInstance.getTestSuiteInstances().size() == 1, "SuiteInstances.TestSuiteInstances.size");
 				}
 			} catch (AssertionError e) {
 				log.error("Suite comparison result unexpected.");
@@ -286,7 +294,7 @@ public class DataProvider2_Test extends TestNGClassBase {
 				Assert.assertEquals(testSuite.getTestClasses().size(),
 					expectedTestSuite.getTestClasses().size());
 				Assert.assertEquals(gopherData.findTestSuiteInstancesByTestSuite(
-						testSuite.getId()).size(), 1);
+					testSuite.getId()).size(), 1);
 				//Assert.assertEquals(testSuite, expectedTestSuite);
 			}
 			catch (AssertionError e) {
@@ -319,11 +327,11 @@ public class DataProvider2_Test extends TestNGClassBase {
 			}
 
 			// Validate the TestCase.
-			try{
-				Assert.assertEquals(this.testClass.getTestSuites().size(), 1);
-				Assert.assertEquals(testClass.getTestSuites().size(),1);
+			try {
+				Assert.assertTrue(testCase.getId().equals(this.testCase.getId()) ||
+					testCase.getId().equals(this.testCase2.getId()));
 			} catch (AssertionError e) {
-				log.error("TestClass comparison result unexpected.");
+				log.error("TestCases comparison result unexpected.");
 				log.error(e);
 				ErrorUtil.addVerificationFailure(e);			
 			}

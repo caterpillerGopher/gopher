@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="DataProvider_TestSuite" >
+<suite name="Clear_TestSuite" >
 
 	<parameter name="url"  value="method-url"/>
 	<parameter name="browser"  value="CHROME"/>
 
-	<test name="DataProvider_Test">
+	<test name="Clear_Test">
 		<classes>
-			<class name="com.echostar.gopher.test.DataProvider_Test"></class>
+			<class name="com.echostar.gopher.system.Clear_Test"></class>
 		</classes>
 	</test>
 </suite>

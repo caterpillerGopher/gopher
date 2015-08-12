@@ -1,4 +1,4 @@
-package com.echostar.gopher.test;
+package com.echostar.gopher.system;
 
 import org.apache.log4j.Logger;
 import org.testng.annotations.Test;

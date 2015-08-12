@@ -1,4 +1,4 @@
-package com.echostar.gopher.test;
+package com.echostar.gopher.system;
 
 public class SuiteInstance2_Test extends SuiteInstance_Test {
 

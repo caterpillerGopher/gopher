@@ -1,4 +1,4 @@
-package com.echostar.gopher.test;
+package com.echostar.gopher.system;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
 
+import com.echostar.gopher.exception.ComparisonException;
 import com.echostar.gopher.exception.TestException;
 import com.echostar.gopher.persist.BrowserEnum;
 import com.echostar.gopher.persist.GopherData;
@@ -22,14 +23,14 @@ import com.echostar.gopher.testng.ErrorUtil;
 import com.echostar.gopher.testng.TestNGClassBase;
 import com.echostar.gopher.util.ExceptionUtil;
 
-public class TestException_Test extends TestNGClassBase {
+public class ComparisonException_Test extends TestNGClassBase {
 
 	private TestRun testRun;
 	private TestClass testClass;
 	private TestCase testCase;
 	private TestSuite testSuite;
 
-	public TestException_Test () throws Exception {
+	protected ComparisonException_Test() throws Exception {
 		super();
 	}
 
@@ -74,7 +75,7 @@ public class TestException_Test extends TestNGClassBase {
 			// Create a TestSuite.
 			List<TestClass> testClasses = new ArrayList<TestClass>();
 			testClasses.add(testClass);
-			testSuite = gopherData.createTestSuite ("TestException_TestSuite", "version", "desc",
+			testSuite = gopherData.createTestSuite ("ComparisonException_TestSuite", "version", "desc",
 				true, testClasses);
 
 			List<TestSuite> testSuites = new ArrayList<TestSuite>();
@@ -104,8 +105,8 @@ public class TestException_Test extends TestNGClassBase {
 	}
 
 	/**
-	 * Do after method validation.
-	 * @param context  
+	 * Do validation after test run.
+	 * @param context the TestNG context 
 	 */
 	@AfterMethod
 	public void afterMethod(ITestContext context) throws Exception {
@@ -123,7 +124,7 @@ public class TestException_Test extends TestNGClassBase {
 			com.echostar.gopher.persist.TestException testException =
 				testRunResult.getTestExceptions().iterator().next();
 			Assert.assertEquals(testException.getExceptionClass(),
-				"com.echostar.gopher.exception.TestException");
+				"com.echostar.gopher.exception.ComparisonException");
 		} catch (AssertionError e) {
 			log.error(ExceptionUtil.getStackTraceString(e, 10000));
 			ErrorUtil.addVerificationFailure(e);
@@ -158,10 +159,10 @@ public class TestException_Test extends TestNGClassBase {
 
 		GopherData gopherData = null;
 		try {
-			//gopherData = GopherDataFactory.getGopherData();
-			TestException te = new TestException ("TestException test.");
+			log.info("Adding exception to verification failures.");
+			ComparisonException te = new ComparisonException ("ComparisonException_Test.");
 			ErrorUtil.addVerificationFailure(te);
-			throw te;
+			//throw te;
 		} finally {
 			if (gopherData != null) {
 				gopherData.close();

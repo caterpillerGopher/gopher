@@ -7,7 +7,7 @@
 
 	<test name="SuiteInstance2_Test">
 		<classes>
-			<class name="com.echostar.gopher.test.SuiteInstance2_Test"></class>
+			<class name="com.echostar.gopher.system.SuiteInstance2_Test"></class>
 		</classes>
 	</test>
 </suite>

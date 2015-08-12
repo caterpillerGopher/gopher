@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="DataProvider2_TestSuite" >
+<suite name="ComparisonException_TestSuite" >
 
 	<parameter name="url"  value="method-url"/>
 	<parameter name="browser"  value="CHROME"/>
 
-	<test name="DataProvider2_Test">
+	<test name="ComparisonException_Test">
 		<classes>
-			<class name="com.echostar.gopher.test.DataProvider2_Test"></class>
+			<class name="com.echostar.gopher.system.ComparisonException_Test"></class>
 		</classes>
 	</test>
 </suite>
