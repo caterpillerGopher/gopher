@@ -385,6 +385,7 @@ public interface GopherData {
 	public SuiteInstance findSuiteInstanceById(Long id) throws Exception;
 	public List<SuiteInstance> findSuiteInstancesBySuite (Long testSuiteId) throws Exception;
 	public List<TestClass> findAllTestClasses() throws Exception;
+	public List<TestData> findAllTestData() throws Exception;
 	public List<ElementLocator> findAllElementLocators() throws Exception;
 	public List<SuiteInstance> findAllSuiteInstances() throws Exception;
 	public List<TestSuiteInstance> findAllTestSuiteInstances() throws Exception;

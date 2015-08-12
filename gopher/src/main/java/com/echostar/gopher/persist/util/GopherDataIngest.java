@@ -369,7 +369,7 @@ public class GopherDataIngest {
 			Collection<HierarchyNode> elementLocatorIdNodes = testCaseNode.getNodesByName (
 					"element-locator-id");
 
-			List<ElementLocator> elementLocators = createElementLocators (elementLocatorIdNodes);
+			List<ElementLocator> elementLocators = getElementLocators (elementLocatorIdNodes);
 			testCase.setElementLocators (elementLocators);
 
 			session.update (testCase);
@@ -673,8 +673,16 @@ public class GopherDataIngest {
 		}
 		return testDataSet;
 	}
-	
-	private List<ElementLocator> createElementLocators (Collection<HierarchyNode> elementLocatorIdNodes) throws Exception {
+
+	/**
+	 * Get the ElementLocators from the elementLocatorMap for the given element-locator-id elements from the
+	 * model XML.
+	 *
+	 * @param elementLocatorIdNodes		the element-locator-id XML elements
+	 * @return							the ElementLocators
+	 * @throws Exception				on any error
+	 */
+	private List<ElementLocator> getElementLocators (Collection<HierarchyNode> elementLocatorIdNodes) throws Exception {
 
 	    List<ElementLocator> elementLocators =  new ArrayList<ElementLocator>();
 		for (HierarchyNode elementLocatorIdNode : elementLocatorIdNodes) {

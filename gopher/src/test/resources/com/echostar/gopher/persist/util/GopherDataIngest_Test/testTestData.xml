@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE gopher-data SYSTEM "gopher-data.dtd">
+<gopher-data>
+	<test-class>
+		<id>a class id</id>
+		<name>a class name</name>
+		<version>1.0</version>
+		<class-name>a class name</class-name>
+		<description>a description</description>
+		<runmode>Y</runmode>
+		<jira-issue>41</jira-issue>
+		<test-data-type-id>test data type 1</test-data-type-id>
+		<test-data-type-id>test data type 2</test-data-type-id>
+    </test-class>
+	<test-case>
+		<id>case 1</id>
+		<name>case 1</name>
+		<version>1.0</version>
+		<runmode>Y</runmode>
+		<test-class-id>a class id</test-class-id>
+		<test-data-id>test data id 1</test-data-id>
+	</test-case>
+    <test-data-type>
+        <id>test data type 1</id>
+        <name>test data type 1</name>
+        <type>STRING</type>
+        <role>LABEL</role>
+    </test-data-type>
+    <test-data-type>
+        <id>test data type 2</id>
+        <name>test data type 2</name>
+        <type>STRING</type>
+        <role>LABEL</role>
+    </test-data-type>
+	<test-case>
+		<id>case 2</id>
+		<name>case 2</name>
+		<version>1.0</version>
+		<runmode>Y</runmode>
+		<test-class-id>a class id</test-class-id>
+        <test-data-id>test data id 1</test-data-id>
+        <test-data-id>test data id 2</test-data-id>
+	</test-case>
+    <test-data>
+        <id>test data id 1</id>
+        <value>test data 1</value>
+        <test-data-type-id>test data type 1</test-data-type-id>
+    </test-data>
+    <test-data>
+        <id>test data id 2</id>
+        <value>test data 2</value>
+        <test-data-type-id>test data type 2</test-data-type-id>
+    </test-data>
+</gopher-data>

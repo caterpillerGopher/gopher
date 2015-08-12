@@ -676,6 +676,13 @@ public class GopherDataImpl implements GopherData {
 		return results;				
 	}
 
+	public List<TestData> findAllTestData() throws Exception {
+		Query query = hibernateSession.createQuery("FROM TestData");
+		@SuppressWarnings({ "unchecked" })
+	    List<TestData> results = query.list();
+		return results;				
+	}
+
 	public List<TestSuiteInstance> findAllTestSuiteInstances() throws Exception {
 		Query query = hibernateSession.createQuery("FROM TestSuiteInstance");
 		@SuppressWarnings({ "unchecked" })

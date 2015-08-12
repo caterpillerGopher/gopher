@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="GopherDataIngest_TestSuite" >
 
-	<test name="Clear_Test">
+	<test name="GopherDataIngest_Test">
 		<classes>
 			<class name="com.echostar.gopher.persist.util.GopherDataIngest_Test"></class>
 		</classes>
