@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE gopher-data SYSTEM "gopher-data.dtd">
+<gopher-data>
+	<test-class>
+		<id>a class id</id>
+		<name>a class name</name>
+		<version>1.0</version>
+		<class-name>a class name</class-name>
+		<description>a description</description>
+		<runmode>Y</runmode>
+		<jira-issue>41</jira-issue>
+    </test-class>
+	<test-case>
+		<id>case 1</id>
+		<name>case 1</name>
+		<version>1.0</version>
+		<runmode>Y</runmode>
+		<test-class-id>a class id</test-class-id>
+		<element-locator-id>locator 1</element-locator-id>
+	</test-case>
+	<test-case>
+		<id>case 2</id>
+		<name>case 2</name>
+		<version>1.0</version>
+		<runmode>Y</runmode>
+		<test-class-id>a class id</test-class-id>
+		<element-locator-id>locator 1</element-locator-id>
+		<element-locator-id>locator 2</element-locator-id>
+	</test-case>
+	<element-locator>
+		<id>locator 1</id>
+		<locator-type>XPATH</locator-type>
+		<name>locator 1</name>
+		<value>a locator value</value>
+		<description>a locator description</description>
+	</element-locator>
+	<element-locator>
+		<id>locator 2</id>
+		<locator-type>XPATH</locator-type>
+		<name>locator 2</name>
+		<value>another locator value</value>
+		<description>another locator description</description>
+	</element-locator>
+</gopher-data>

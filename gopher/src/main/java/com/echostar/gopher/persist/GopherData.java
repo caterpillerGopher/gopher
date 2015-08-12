@@ -348,6 +348,15 @@ public interface GopherData {
 	public List<TestCase> findTestCasesByTestClass (Long testClassId) throws Exception;
 
 	/**
+	 * Find {@link TestCase TestCases} by name.
+	 * 
+	 * @param name			the TestCase name
+	 * @return				a List of {@link TestCase TestCase}
+	 * @throws Exception	on error
+	 */
+	public List<TestCase> findTestCasesByName (String name) throws Exception;
+
+	/**
 	 * Find {@link TestRunResult TestRunResults} by {@link TestClass TestClass} id.
 	 * 
 	 * @param testClassId	the TestClass id
@@ -376,6 +385,7 @@ public interface GopherData {
 	public SuiteInstance findSuiteInstanceById(Long id) throws Exception;
 	public List<SuiteInstance> findSuiteInstancesBySuite (Long testSuiteId) throws Exception;
 	public List<TestClass> findAllTestClasses() throws Exception;
+	public List<ElementLocator> findAllElementLocators() throws Exception;
 	public List<SuiteInstance> findAllSuiteInstances() throws Exception;
 	public List<TestSuiteInstance> findAllTestSuiteInstances() throws Exception;
 	public TestSuiteInstance findTestSuiteInstanceById(Long id) throws Exception;

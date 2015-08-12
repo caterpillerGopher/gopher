@@ -547,6 +547,17 @@ public class GopherDataImpl implements GopherData {
 	}
 
 	/**
+	 * Implement {@link GopherData#findTestCasesByName(String) GopherData}.
+	 */
+	public List<TestCase> findTestCasesByName (String name) throws Exception {
+
+		Query query = hibernateSession.createQuery("FROM TestCase WHERE name='"+name+"'");
+	    @SuppressWarnings("unchecked")
+        List<TestCase> results = query.list();
+		return results;
+	}
+
+	/**
 	 * Implement {@link GopherData#findTestRunResultsByTestRun(Long) GopherData}.
 	 */
 	public List<TestRunResult> findTestRunResultsByTestRun (Long testRunId) throws Exception {
@@ -669,6 +680,13 @@ public class GopherDataImpl implements GopherData {
 		Query query = hibernateSession.createQuery("FROM TestSuiteInstance");
 		@SuppressWarnings({ "unchecked" })
 	    List<TestSuiteInstance> results = query.list();
+		return results;		
+	}
+
+	public List<ElementLocator> findAllElementLocators() throws Exception {
+		Query query = hibernateSession.createQuery("FROM ElementLocator");
+		@SuppressWarnings({ "unchecked" })
+	    List<ElementLocator> results = query.list();
 		return results;		
 	}
 

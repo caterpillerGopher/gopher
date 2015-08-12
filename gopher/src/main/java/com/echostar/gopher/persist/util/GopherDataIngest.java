@@ -64,10 +64,13 @@ public class GopherDataIngest {
 	// Read-only, no ingest.
 	private static boolean readOnly = false;
 
+	// The Gopher data interface
 	private GopherData gopherData;
-	
+
+	// The Hibernate Session, from Gopher
 	private Session session;
 
+	// Collections of nodes from the Gopher model XML
 	Collection<HierarchyNode> suiteNodes;
 	Collection<HierarchyNode> suiteDecoratorNodes;
 	Collection<HierarchyNode> testSuiteDecoratorNodes;
@@ -102,6 +105,9 @@ public class GopherDataIngest {
 	
 	// A map of requested Browser id to Browser.
 	private Map<String, Browser> browserMap = new HashMap<String, Browser>();
+
+	// A map of requested ElementLocator id to ElementLocator.
+	private Map<String, ElementLocator> elementLocatorMap = new HashMap<String, ElementLocator>();
 
 	public GopherDataIngest () {
 		gopherData = GopherDataFactory.getGopherData();
@@ -144,7 +150,6 @@ public class GopherDataIngest {
 	
 		try {
 			ingester.ingest(fileName, dtdFileName);
-			System.out.println ("Ingest ok");
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit (-1);
@@ -260,6 +265,21 @@ public class GopherDataIngest {
 		}
 
 		Transaction tran = session.beginTransaction();
+
+		// Ingest all the element locators.
+		for (HierarchyNode elementLocatorNode : elementLocatorNodes) {
+
+			String name = (String) elementLocatorNode.getNodeByName ("name").getValue();
+		    String value = (String) elementLocatorNode.getNodeByName ("value").getValue();
+		    String description = (String) elementLocatorNode.getNodeByName ("description").getValue();
+		    String locatorString = (String) elementLocatorNode.getNodeByName ("locator-type").getValue();
+		    ElementLocatorType locatorType = ElementLocatorType.valueOf(locatorString);
+
+		    ElementLocator locator = new ElementLocator (locatorType, name, value, description);
+			session.save (locator);
+			String idReq = (String) elementLocatorNode.getNodeByName("id").getValue();
+			elementLocatorMap.put(idReq, locator);
+		}
 
 		// Ingest all the test classes.
 		for (HierarchyNode testClassNode : testClassNodes) {
@@ -514,6 +534,7 @@ public class GopherDataIngest {
 		createTestRuns ();
 
 		tran.commit();
+		System.out.println ("Ingest ok");
 	}
 
 	/**
@@ -605,21 +626,6 @@ public class GopherDataIngest {
 		return foundNode;
 	}
 
-	private static HierarchyNode findElementLocatorNodeById (String idReq,
-			Collection<HierarchyNode> elementLocatorNodes) {
-
-		HierarchyNode foundNode = null;
-		for (HierarchyNode elementLocatorNode : elementLocatorNodes) {
-			HierarchyNode idNode = elementLocatorNode.getNodeByName("id");
-			String id = (String)idNode.getValue();
-			if (id.equals(idReq)) {
-				foundNode = elementLocatorNode;
-				break;
-			}
-		}
-		return foundNode;
-	}
-
 	private List<TestDataType> createTestDataTypes (Collection<HierarchyNode> testDataTypeIdNodes) throws Exception {
 
 	    List<TestDataType> testDataTypes =  new ArrayList<TestDataType>();
@@ -673,23 +679,7 @@ public class GopherDataIngest {
 	    List<ElementLocator> elementLocators =  new ArrayList<ElementLocator>();
 		for (HierarchyNode elementLocatorIdNode : elementLocatorIdNodes) {
 			String elementLocatorIdReq = (String) elementLocatorIdNode.getValue();
-
-			HierarchyNode elementLocatorNode = findElementLocatorNodeById (elementLocatorIdReq,
-				elementLocatorNodes);
-
-			if (elementLocatorNode == null) {
-				throw new Exception ("ElementLocator node not found with id "+elementLocatorIdReq+".");
-			}
-
-			String name = (String) elementLocatorNode.getNodeByName ("name").getValue();
-			String value = (String) elementLocatorNode.getNodeByName ("value").getValue();
-			String description = (String) elementLocatorNode.getNodeByName ("description").getValue();
-			String locatorString = (String) elementLocatorNode.getNodeByName ("locator-type").getValue();
-			ElementLocatorType locatorType = ElementLocatorType.valueOf(locatorString);
-
-			ElementLocator testData = new ElementLocator (locatorType, name, value, description);
-			session.save (testData);
-			elementLocators.add(testData);
+			elementLocators.add(elementLocatorMap.get(elementLocatorIdReq));
 		}
 		return elementLocators;
 	}
