@@ -100,6 +100,9 @@ public class GopherDataIngest {
 	// A map of requested TestDataType id to TestDataType.
 	private Map<String, TestDataType> testDataTypeMap = new HashMap<String, TestDataType>();
 
+	// A map of requested TestData id to TestData.
+	private Map<String, TestData> testDataMap = new HashMap<String, TestData>();
+
 	// A map of requested TestNode id to TestNode.
 	private Map<String, TestNode> testNodeMap = new HashMap<String, TestNode>();
 	
@@ -266,6 +269,22 @@ public class GopherDataIngest {
 
 		Transaction tran = session.beginTransaction();
 
+		// Ingest all the test data types.
+		for (HierarchyNode testDataTypeNode : testDataTypeNodes) {
+
+			String idReq = (String) testDataTypeNode.getNodeByName ("id").getValue();
+			String name = (String) testDataTypeNode.getNodeByName ("name").getValue();
+			String type = (String) testDataTypeNode.getNodeByName ("type").getValue();
+			String role = (String) testDataTypeNode.getNodeByName ("role").getValue();
+			DataTypeEnum typeEnum = DataTypeEnum.valueOf (type);
+			DataRoleEnum roleEnum = DataRoleEnum.valueOf (role);
+			TestDataType testDataType = new TestDataType (name, typeEnum, roleEnum);
+			session.save(testDataType);
+
+			testDataTypeMap.put(idReq, testDataType);
+			System.err.println("type "+idReq);
+		}
+
 		// Ingest all the element locators.
 		for (HierarchyNode elementLocatorNode : elementLocatorNodes) {
 
@@ -279,6 +298,20 @@ public class GopherDataIngest {
 			session.save (locator);
 			String idReq = (String) elementLocatorNode.getNodeByName("id").getValue();
 			elementLocatorMap.put(idReq, locator);
+		}
+
+		// Ingest all the test data.
+		for (HierarchyNode testDataNode : testDataNodes) {
+
+			String testDataTypeIdReq = (String) testDataNode.getNodeByName ("test-data-type-id").getValue();
+			String value = (String) testDataNode.getNodeByName ("value").getValue();
+			TestDataType testDataType = testDataTypeMap.get(testDataTypeIdReq);
+
+			TestData testData = new TestData (testDataType, value);
+			session.save (testData);
+			String idReq = (String) testDataNode.getNodeByName("id").getValue();
+			testDataMap.put(idReq, testData);
+			System.err.println("data "+value);
 		}
 
 		// Ingest all the test classes.
@@ -303,7 +336,7 @@ public class GopherDataIngest {
 			Collection<HierarchyNode> testDataTypeIdNodes = testClassNode.getNodesByName (
 				"test-data-type-id");
 
-			List<TestDataType> testDataTypes =  createTestDataTypes (testDataTypeIdNodes);
+			List<TestDataType> testDataTypes =  getTestDataTypes (testDataTypeIdNodes);
 			testClass.setTestDataTypes (testDataTypes);
 			session.update (testClass);
 		}
@@ -363,7 +396,7 @@ public class GopherDataIngest {
 			Collection<HierarchyNode> testDataIdNodes = testCaseNode.getNodesByName (
 				"test-data-id");
 
-			List<TestData> testData = createTestData (testDataIdNodes);
+			List<TestData> testData = getTestData (testDataIdNodes);
 			testCase.setTestData (testData);
 
 			Collection<HierarchyNode> elementLocatorIdNodes = testCaseNode.getNodesByName (
@@ -596,21 +629,6 @@ public class GopherDataIngest {
 		return testClasses;
 	}
 
-	private static HierarchyNode findTestDataTypeNodeById (String testDataTypeIdReq,
-			Collection<HierarchyNode> testDataTypeNodes) {
-
-		HierarchyNode foundNode = null;
-		for (HierarchyNode testDataTypeNode : testDataTypeNodes) {
-			HierarchyNode idNode = testDataTypeNode.getNodeByName("id");
-			String id = (String)idNode.getValue();
-			if (id.equals(testDataTypeIdReq)) {
-				foundNode = testDataTypeNode;
-				break;
-			}
-		}
-		return foundNode;
-	}
-
 	private static HierarchyNode findTestDataNodeById (String testDataIdReq,
 			Collection<HierarchyNode> testDataNodes) {
 
@@ -626,50 +644,25 @@ public class GopherDataIngest {
 		return foundNode;
 	}
 
-	private List<TestDataType> createTestDataTypes (Collection<HierarchyNode> testDataTypeIdNodes) throws Exception {
+	private List<TestDataType> getTestDataTypes (Collection<HierarchyNode> testDataTypeIdNodes) throws Exception {
 
 	    List<TestDataType> testDataTypes =  new ArrayList<TestDataType>();
 
 		for (HierarchyNode testDataTypeIdNode : testDataTypeIdNodes) {
 			String testDataTypeIdReq = (String) testDataTypeIdNode.getValue();
 
-			HierarchyNode testDataTypeNode = findTestDataTypeNodeById (testDataTypeIdReq,
-				testDataTypeNodes);
-			if (testDataTypeNode == null) {
-				throw new Exception ("test data type node with id "+testDataTypeIdReq+" not found.");
-			}
-			String name = (String) testDataTypeNode.getNodeByName ("name").getValue();
-			String type = (String) testDataTypeNode.getNodeByName ("type").getValue();
-			String role = (String) testDataTypeNode.getNodeByName ("role").getValue();
-			DataTypeEnum typeEnum = DataTypeEnum.valueOf (type);
-			DataRoleEnum roleEnum = DataRoleEnum.valueOf (role);
-			TestDataType testDataType = new TestDataType (name, typeEnum, roleEnum);
-
-			testDataTypeMap.put(testDataTypeIdReq, testDataType);
-			testDataTypes.add(testDataType);
+			testDataTypes.add(testDataTypeMap.get(testDataTypeIdReq));
 		}
 		return testDataTypes;
 	}
 
-	private List<TestData> createTestData (Collection<HierarchyNode> testDataIdNodes) throws Exception {
+	private List<TestData> getTestData (Collection<HierarchyNode> testDataIdNodes) throws Exception {
 
 	    List<TestData> testDataSet =  new ArrayList<TestData>();
 		for (HierarchyNode testDataIdNode : testDataIdNodes) {
 			String testDataIdReq = (String)testDataIdNode.getValue();
 
-			HierarchyNode testDataNode = findTestDataNodeById (testDataIdReq,
-				testDataNodes);
-			if (testDataNode == null) {
-				throw new Exception ("Test data node not found with id "+testDataIdReq+".");
-			}
-
-			String testDataTypeIdReq = (String) testDataNode.getNodeByName ("test-data-type-id").getValue();
-			String value = (String) testDataNode.getNodeByName ("value").getValue();
-			TestDataType testDataType = testDataTypeMap.get(testDataTypeIdReq);
-
-			TestData testData = new TestData (testDataType, value);
-			session.save (testData);
-			testDataSet.add(testData);
+			testDataSet.add(testDataMap.get(testDataIdReq));
 		}
 		return testDataSet;
 	}

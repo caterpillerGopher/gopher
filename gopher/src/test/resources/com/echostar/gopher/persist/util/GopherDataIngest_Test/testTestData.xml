@@ -12,14 +12,6 @@
 		<test-data-type-id>test data type 1</test-data-type-id>
 		<test-data-type-id>test data type 2</test-data-type-id>
     </test-class>
-	<test-case>
-		<id>case 1</id>
-		<name>case 1</name>
-		<version>1.0</version>
-		<runmode>Y</runmode>
-		<test-class-id>a class id</test-class-id>
-		<test-data-id>test data id 1</test-data-id>
-	</test-case>
     <test-data-type>
         <id>test data type 1</id>
         <name>test data type 1</name>
@@ -32,6 +24,14 @@
         <type>STRING</type>
         <role>LABEL</role>
     </test-data-type>
+	<test-case>
+		<id>case 1</id>
+		<name>case 1</name>
+		<version>1.0</version>
+		<runmode>Y</runmode>
+		<test-class-id>a class id</test-class-id>
+		<test-data-id>test data id 1</test-data-id>
+	</test-case>
 	<test-case>
 		<id>case 2</id>
 		<name>case 2</name>
