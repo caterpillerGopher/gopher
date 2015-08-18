@@ -629,21 +629,6 @@ public class GopherDataIngest {
 		return testClasses;
 	}
 
-	private static HierarchyNode findTestDataNodeById (String testDataIdReq,
-			Collection<HierarchyNode> testDataNodes) {
-
-		HierarchyNode foundNode = null;
-		for (HierarchyNode testDataNode : testDataNodes) {
-			HierarchyNode idNode = testDataNode.getNodeByName("id");
-			String id = (String)idNode.getValue();
-			if (id.equals(testDataIdReq)) {
-				foundNode = testDataNode;
-				break;
-			}
-		}
-		return foundNode;
-	}
-
 	private List<TestDataType> getTestDataTypes (Collection<HierarchyNode> testDataTypeIdNodes) throws Exception {
 
 	    List<TestDataType> testDataTypes =  new ArrayList<TestDataType>();
