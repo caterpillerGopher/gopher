@@ -282,7 +282,6 @@ public class GopherDataIngest {
 			session.save(testDataType);
 
 			testDataTypeMap.put(idReq, testDataType);
-			System.err.println("type "+idReq);
 		}
 
 		// Ingest all the element locators.
@@ -311,7 +310,6 @@ public class GopherDataIngest {
 			session.save (testData);
 			String idReq = (String) testDataNode.getNodeByName("id").getValue();
 			testDataMap.put(idReq, testData);
-			System.err.println("data "+value);
 		}
 
 		// Ingest all the test classes.
