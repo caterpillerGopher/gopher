@@ -12,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+
 import com.echostar.gopher.util.Config;
 
 /**
@@ -569,6 +570,20 @@ public class GopherDataImpl implements GopherData {
 	}
 
 	/**
+	 * Implement {@link GopherData#findTestRunResultsBySuiteInstance(Long) GopherData}.
+	 */
+	public TestRunResult findTestRunResultBySuiteInstance (Long suiteInstanceId) throws Exception {
+
+		Query query = hibernateSession.createQuery("FROM TestRunResult WHERE suite_Instance_id="+suiteInstanceId+"");
+		@SuppressWarnings({ "unchecked" })
+	    List<TestRunResult> results = query.list();
+		if (results.size() == 0) {
+			return null;
+		}
+		return results.get(0);
+	}
+
+	/**
 	 * Implement {@link GopherData#findTestSuiteInstancesByTestSuite(Long) TestSuite id}.
 	 */
 	public List<TestSuiteInstance> findTestSuiteInstancesByTestSuite (Long testSuiteId) throws Exception {
@@ -588,6 +603,21 @@ public class GopherDataImpl implements GopherData {
 		@SuppressWarnings({ "unchecked" })
 	    List<SuiteInstance> results = query.list();
 		return results;
+	}
+
+	/**
+	 * Implement {@link GopherData#findLatestSuiteInstance() GopherData}.
+	 */
+	public SuiteInstance findLatestSuiteInstance () throws Exception {
+
+		// TBD - do not get them all.
+		Query query = hibernateSession.createQuery("FROM SuiteInstance ORDER BY start_time DESC");
+		@SuppressWarnings({ "unchecked" })
+	    List<SuiteInstance> results = query.list();
+		if (results.size() == 0) {
+			return null;
+		}
+		return results.get(0);
 	}
 
 	/**

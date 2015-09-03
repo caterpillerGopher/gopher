@@ -330,6 +330,14 @@ public interface GopherData {
 	public Suite findSuiteByNameAndVersion (String name, String version) throws Exception;
 
 	/**
+	 * Find the latest SuiteInstance.
+	 *
+	 * @return				the latest SuiteInstance
+	 * @throws Exception	on any error
+	 */
+	public SuiteInstance findLatestSuiteInstance () throws Exception;
+
+	/**
 	 * Find a {@link TestClass TestClass} by its unique test class name.
 	 * 
 	 * @param name			the TestNG Java class name
@@ -364,6 +372,8 @@ public interface GopherData {
 	 * @throws Exception	on any error
 	 */
 	public List<TestRunResult> findTestRunResultsByTestClass (Long testClassId) throws Exception;
+
+	public TestRunResult findTestRunResultBySuiteInstance (Long suiteInstanceId) throws Exception;
 
 	public List<TestRunResult> findTestRunResultsByTestRun (Long testRunId) throws Exception;
 
