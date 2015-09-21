@@ -2,6 +2,7 @@ package com.echostar.gopher.persist;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -769,5 +770,28 @@ public class GopherDataImpl implements GopherData {
 			}
 		}
 		return null;
+	}
+
+	public Collection<Browser> findAllBrowsers() throws Exception {		
+		Query query = hibernateSession.createQuery("FROM Browser");
+		@SuppressWarnings({ "unchecked" })
+	    List<Browser> results = query.list();
+		return results;		
+	}
+
+	public Collection<TestNode> findAllTestNodes() throws Exception {
+		
+		Query query = hibernateSession.createQuery("FROM TestNode");
+		@SuppressWarnings({ "unchecked" })
+	    List<TestNode> results = query.list();
+		return results;		
+	}
+
+	public List<Browser> findBrowser(String name, BrowserEnum type) {
+		
+		Query query = hibernateSession.createQuery("FROM Browser WHERE name='"+name+"' AND type='"+type.getValue()+"'");
+		@SuppressWarnings({ "unchecked" })
+	    List<Browser> results = query.list();
+		return results;		
 	}
 }

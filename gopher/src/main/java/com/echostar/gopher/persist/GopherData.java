@@ -1,7 +1,9 @@
 package com.echostar.gopher.persist;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Session;
 
 /**
@@ -432,4 +434,10 @@ public interface GopherData {
 	 * @return				the TestClassDecorator if any
 	 */
 	public TestClassDecorator findTestClassDecorator (TestSuite testSuite, TestClass testClass);
+
+	public Collection<Browser> findAllBrowsers() throws Exception;
+
+	public Collection<TestNode> findAllTestNodes() throws Exception;
+
+	public List<Browser> findBrowser(String name, BrowserEnum type) throws Exception;
 }
